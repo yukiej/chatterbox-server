@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     './server/spec': path.resolve(__dirname, 'server/spec/index.js')
   },
+
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, './server/spec/dist/')
@@ -21,6 +22,10 @@ module.exports = {
       }
     ]
   },
-  externals: {
+
+  node: {
+    fs: 'empty',
+    tls: 'empty',
+    net: 'empty'
   }
 };

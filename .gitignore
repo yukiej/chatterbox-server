@@ -30,7 +30,7 @@ results
 ### NPM ###
 npm-debug.log
 node_modules
-
+dist
 
 ### Bower ###
 **/bower_components/
