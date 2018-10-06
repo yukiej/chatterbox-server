@@ -1,5 +1,6 @@
 var handler = require('../request-handler');
 var expect = require('chai').expect;
+var _ = require('underscore');
 var stubs = require('./Stubs');
 
 describe('Node Server Request Listener Function', function() {
@@ -73,7 +74,7 @@ describe('Node Server Request Listener Function', function() {
 
     handler.requestHandler(req, res);
     const responseMessage = JSON.parse(res._data);
-    
+
     expect(res._responseCode).to.equal(201);
     expect(responseMessage.username).to.equal('Jono');
     expect(responseMessage.text).to.equal('Do my bidding!');
@@ -137,6 +138,31 @@ describe('Node Server Request Listener Function', function() {
     expect(messages.length).to.be.above(0);
     expect(messages[0].username).to.equal('Curly, Larry &amp; Moe');
     expect(messages[0].text).to.equal('Do my bidding!');
+    expect(res._ended).to.equal(true);
+  });
+
+  it('NEW: Should give each message a unique identifier', function() {
+    var stubMsg = {
+      username: 'new friend',
+      text: 'Lets go!'
+    };
+    var reqP = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var resP = new stubs.response();
+    handler.requestHandler(reqP, resP);
+
+    expect(resP._responseCode).to.equal(201);
+
+    req = new stubs.request('/classes/messages', 'GET');
+    res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(200);
+    const messages = JSON.parse(res._data).results;
+    const ids = _.map(messages, (message) => message.objectId);
+
+    expect(messages.length).to.be.above(0);
+    expect(_.uniq(ids).length).to.equal(messages.length);
     expect(res._ended).to.equal(true);
   });
 
