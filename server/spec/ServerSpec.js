@@ -15,7 +15,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  it('Should send back parsable stringified JSON', function() {
+  xit('Should send back parsable stringified JSON', function() {
     var req = new stubs.request('/classes/messages', 'GET');
     var res = new stubs.response();
 
@@ -25,7 +25,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  it('Should send back an object', function() {
+  xit('Should send back an object', function() {
     var req = new stubs.request('/classes/messages', 'GET');
     var res = new stubs.response();
 
@@ -36,7 +36,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  it('Should send an object containing a `results` array', function() {
+  xit('Should send an object containing a `results` array', function() {
     var req = new stubs.request('/classes/messages', 'GET');
     var res = new stubs.response();
 
@@ -48,7 +48,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  it('Should accept posts to /classes/messages', function() {
+  xit('Should accept posts to /classes/messages', function() {
     var stubMsg = {
       username: 'Jono',
       text: 'Do my bidding!'
@@ -67,7 +67,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  it('Should respond with messages that were previously posted', function() {
+  xit('Should respond with messages that were previously posted', function() {
     var stubMsg = {
       username: 'Jono',
       text: 'Do my bidding!'
@@ -98,7 +98,6 @@ describe('Node Server Request Listener Function', function() {
     var res = new stubs.response();
 
     handler.requestHandler(req, res);
-
     expect(res._responseCode).to.equal(404);
     expect(res._ended).to.equal(true);
   });
