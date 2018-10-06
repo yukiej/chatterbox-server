@@ -58,12 +58,25 @@ describe('Node Server Request Listener Function', function() {
 
     handler.requestHandler(req, res);
 
-    // Expect 201 Created response status
     expect(res._responseCode).to.equal(201);
 
-    // Testing for a newline isn't a valid test
-    // TODO: Replace with with a valid test
-    // expect(res._data).to.equal(JSON.stringify('\n'));
+    expect(res._ended).to.equal(true);
+  });
+
+  it('NEW: Should return message after successful POST', function() {
+    var stubMsg = {
+      username: 'Jono',
+      text: 'Do my bidding!'
+    };
+    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res = new stubs.response();
+
+    handler.requestHandler(req, res);
+    const responseMessage = JSON.parse(res._data);
+    
+    expect(res._responseCode).to.equal(201);
+    expect(responseMessage.username).to.equal('Jono');
+    expect(responseMessage.text).to.equal('Do my bidding!');
     expect(res._ended).to.equal(true);
   });
 
@@ -76,7 +89,6 @@ describe('Node Server Request Listener Function', function() {
     var res = new stubs.response();
 
     handler.requestHandler(req, res);
-
     expect(res._responseCode).to.equal(201);
 
     // Now if we request the log for that room the message we posted should be there:
@@ -102,7 +114,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  it('Should scrub inputs from client', function() {
+  it('NEW: Should scrub inputs from client', function() {
     var stubMsg = {
       username: 'Curly, Larry & Moe',
       text: 'Do my bidding!'
@@ -128,8 +140,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  it('Should sort messages by request flag createdAt', function() {
-    // Now if we request the log for that room the message we posted should be there:
+  it('NEW: Should sort messages by request flag createdAt', function() {
     req = new stubs.request('/classes/messages', 'GET', { order: '-createdAt' });
     res = new stubs.response();
 
@@ -145,9 +156,24 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  it('Should sort messages by request flag objectId', function() {
-    // Now if we request the log for that room the message we posted should be there:
+  it('NEW: Should sort messages by request flag objectId', function() {
     req = new stubs.request('/classes/messages', 'GET', { order: '-objectId' });
+    res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(200);
+    var messages = JSON.parse(res._data).results;
+    expect(messages.length).to.be.above(0);
+    expect(messages[0].username).to.equal('lisa');
+    expect(messages[0].text).to.equal('fun times');
+    expect(messages[2].username).to.equal('yuki');
+    expect(messages[2].text).to.equal('cool');
+    expect(res._ended).to.equal(true);
+  });
+
+  it('NEW: Should return messages even if request flag does not exist', function() {
+    req = new stubs.request('/classes/messages', 'GET', { order: '-garbage' });
     res = new stubs.response();
 
     handler.requestHandler(req, res);

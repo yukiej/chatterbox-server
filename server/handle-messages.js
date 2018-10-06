@@ -37,6 +37,8 @@ exports.handleMessagePost = (request, response) => {
   request.on('end', () => {
     messageCleaner(JSON.parse(requestBody));
   });
+
+  return JSON.stringify(messages.results[0]);
 };
 
 exports.handleMessagesGet = (request, response) => {

@@ -26,8 +26,7 @@ const requestHandler = (request, response) => {
   if (_.contains(routes, urlParts.pathname)) {
     if (request.method === 'POST') {
       statusCode = 201;
-      handleMessagePost(request, response);
-      responseText = 'message received';
+      responseText = handleMessagePost(request, response);
     } else if (request.method === 'GET') {
       responseText = handleMessagesGet(request, response);
     }
