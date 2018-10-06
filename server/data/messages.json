@@ -32,9 +32,8 @@
       "username": "lisa",
       "text": "fun times",
       "roomname": "lobby",
-      "objectId": 5,
+      "objectId": 0,
       "createdAt": 1538785362
     }
   ]
-};
-
+}
