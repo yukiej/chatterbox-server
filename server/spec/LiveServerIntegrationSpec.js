@@ -16,7 +16,7 @@ describe('server', function() {
     });
   });
 
-  xit('should send back an object', function(done) {
+  it('should send back an object', function(done) {
     request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
       var parsedBody = JSON.parse(body);
       expect(parsedBody).to.be.an('object');
@@ -33,7 +33,7 @@ describe('server', function() {
     });
   });
 
-  xit('should accept POST requests to /classes/messages', function(done) {
+  it('should accept POST requests to /classes/messages', function(done) {
     var requestParams = {method: 'POST',
       uri: 'http://127.0.0.1:3000/classes/messages',
       json: {

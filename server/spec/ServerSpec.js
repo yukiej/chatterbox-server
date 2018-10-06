@@ -25,7 +25,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  xit('Should send back an object', function() {
+  it('Should send back an object', function() {
     var req = new stubs.request('/classes/messages', 'GET');
     var res = new stubs.response();
 
@@ -48,7 +48,7 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  xit('Should accept posts to /classes/messages', function() {
+  it('Should accept posts to /classes/messages', function() {
     var stubMsg = {
       username: 'Jono',
       text: 'Do my bidding!'

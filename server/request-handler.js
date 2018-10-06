@@ -1,27 +1,9 @@
 const url = require('url');
-const fs = require('fs');
+const _ = require('underscore');
 
-const handleMessages = (request, response) => {
-  console.log('Got to handle messages', request.method);
-  if (request.method === 'POST') {
-    //TO DO: check for data size
-    let requestBody = '';
-    request.on('data', data => requestBody += data);
-    request.on('end', () => {
-      console.log(requestBody);
+const { handleMessagePost, handleMessagesGet } = require('./handle-messages.js');
 
-    });// augment object with TOD and ID
-  } else if (request.method === 'GET') {
-    // return all messages in the response
-
-    // sort by something if the user wants
-  }
-
-};
-
-const routes = {
-  '/classes/messages': handleMessages,
-};
+const routes = ['/classes/messages'];
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
 // Another way to get around this restriction is to serve you chat
@@ -40,12 +22,15 @@ const requestHandler = (request, response) => {
   let responseText = '';
 
   const urlParts = url.parse(request.url);
-  console.log('headers', request.headers);
-  const route = routes[urlParts.pathname];
 
-  if (route) {
-    route(request, response);
-    responseText = 'Successful!';
+  if (_.contains(routes, urlParts.pathname)) {
+    if (request.method === 'POST') {
+      statusCode = 201;
+      handleMessagePost(request, response);
+      responseText = 'message received';
+    } else if (request.method === 'GET') {
+      responseText = handleMessagesGet(request, response);
+    }
   } else {
     statusCode = 404;
     responseText = 'URL not found';
