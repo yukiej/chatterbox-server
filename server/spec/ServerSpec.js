@@ -102,4 +102,64 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
+  it('Should scrub inputs from client', function() {
+    var stubMsg = {
+      username: 'Curly, Larry & Moe',
+      text: 'Do my bidding!'
+    };
+    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(201);
+
+    // Now if we request the log for that room the message we posted should be there:
+    req = new stubs.request('/classes/messages', 'GET');
+    res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(200);
+    var messages = JSON.parse(res._data).results;
+    expect(messages.length).to.be.above(0);
+    expect(messages[0].username).to.equal('Curly, Larry &amp; Moe');
+    expect(messages[0].text).to.equal('Do my bidding!');
+    expect(res._ended).to.equal(true);
+  });
+
+  it('Should sort messages by request flag createdAt', function() {
+    // Now if we request the log for that room the message we posted should be there:
+    req = new stubs.request('/classes/messages', 'GET', { order: '-createdAt' });
+    res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(200);
+    var messages = JSON.parse(res._data).results;
+    expect(messages.length).to.be.above(0);
+    expect(messages[0].username).to.equal('yuki');
+    expect(messages[0].text).to.equal('Im first!');
+    expect(messages[2].username).to.equal('lisa');
+    expect(messages[2].text).to.equal('hihihi');
+    expect(res._ended).to.equal(true);
+  });
+
+  it('Should sort messages by request flag objectId', function() {
+    // Now if we request the log for that room the message we posted should be there:
+    req = new stubs.request('/classes/messages', 'GET', { order: '-objectId' });
+    res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(200);
+    var messages = JSON.parse(res._data).results;
+    expect(messages.length).to.be.above(0);
+    expect(messages[0].username).to.equal('lisa');
+    expect(messages[0].text).to.equal('fun times');
+    expect(messages[2].username).to.equal('yuki');
+    expect(messages[2].text).to.equal('cool');
+    expect(res._ended).to.equal(true);
+  });
+
 });
