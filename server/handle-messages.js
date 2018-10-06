@@ -1,4 +1,7 @@
 const fs = require('fs');
+const path = require('path');
+
+const messageFile = path.resolve(__dirname, 'data/messages.json');
 
 exports.handleMessagePost = (request, response) => {
   let requestBody = '';
@@ -9,6 +12,7 @@ exports.handleMessagePost = (request, response) => {
 };
 
 exports.handleMessagesGet = (request, response) => {
-  const data = '{}';
+  const data = fs.readFileSync(messageFile, 'utf8');
+  console.log(data);
   return data;
 };

@@ -5,36 +5,36 @@
       "text": "text",
       "roomname": "lobby",
       "objectId": 1,
-      "createdAt": 1538785342,
+      "createdAt": 1538785342
     },
     {
       "username": "yuki",
       "text": "cool",
       "roomname": "lobby",
       "objectId": 2,
-      "createdAt": 1538785343,
+      "createdAt": 1538785343
     },
     {
       "username": "yuki",
       "text": "yellooooo",
       "roomname": "after party",
       "objectId": 3,
-      "createdAt": 1538785352,
+      "createdAt": 1538785352
     },
     {
       "username": "lisa",
       "text": "hihihi",
       "roomname": "party room",
       "objectId": 4,
-      "createdAt": 1538785347,
+      "createdAt": 1538785347
     },
     {
       "username": "lisa",
       "text": "fun times",
       "roomname": "lobby",
       "objectId": 5,
-      "createdAt": 1538785362,
-    },
+      "createdAt": 1538785362
+    }
   ]
 };
 

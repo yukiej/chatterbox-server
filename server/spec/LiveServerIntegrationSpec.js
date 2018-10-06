@@ -9,7 +9,7 @@ describe('server', function() {
     });
   });
 
-  xit('should send back parsable stringified JSON', function(done) {
+  it('should send back parsable stringified JSON', function(done) {
     request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
       expect(JSON.parse.bind(this, body)).to.not.throw();
       done();
@@ -24,7 +24,7 @@ describe('server', function() {
     });
   });
 
-  xit('should send an object containing a `results` array', function(done) {
+  it('should send an object containing a `results` array', function(done) {
     request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
       var parsedBody = JSON.parse(body);
       expect(parsedBody).to.be.an('object');
