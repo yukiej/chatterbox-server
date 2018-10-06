@@ -1,14 +1,22 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
+  target: 'node',
+
   entry: {
-    './server/spec': path.resolve(__dirname, 'server/spec/index.js')
+    'spec': path.resolve(__dirname, 'server/spec/index.js')
   },
 
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, './server/spec/dist/')
+  },
+
+  externals: {
+    fs: require('fs'),
+    path: require('path'),
   },
 
   module: {
@@ -23,9 +31,5 @@ module.exports = {
     ]
   },
 
-  node: {
-    fs: 'empty',
-    tls: 'empty',
-    net: 'empty'
-  }
+
 };
