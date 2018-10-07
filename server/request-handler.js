@@ -1,9 +1,9 @@
 const url = require('url');
 const _ = require('underscore');
 
-const { handleMessagePost, handleMessagesGet } = require('./handle-messages.js');
-
-const routes = ['/classes/messages'];
+const { handleMessagePost, handleMessagesGet, messageOptions } = require('./handle-messages.js');
+const { options, routes } = require('./options.js');
+const { handleSite, isSite } = require('./handle-site.js');
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
 // Another way to get around this restriction is to serve you chat
@@ -21,22 +21,29 @@ const requestHandler = (request, response) => {
   let statusCode = 200;
   let responseText = '';
 
-  const urlParts = url.parse(request.url);
+  const extension = url.parse(request.url).pathname;
 
-  if (_.contains(routes, urlParts.pathname)) {
-    if (request.method === 'POST') {
-      statusCode = 201;
-      responseText = handleMessagePost(request, response);
-    } else if (request.method === 'GET') {
-      responseText = handleMessagesGet(request, response);
+  const headers = defaultCorsHeaders;
+  let contentType = 'application/json';
+  if (request.method === 'GET' && isSite(extension)) {
+    ({ responseText, contentType } = handleSite(request, response, extension));
+  } else if (request.method === 'POST' && extension === routes.messages) {
+    statusCode = 201;
+    responseText = handleMessagePost(request, response);
+  } else if (request.method === 'GET' && extension === routes.messages) {
+    responseText = handleMessagesGet(request, response);
+  } else if (request.method === 'OPTIONS') {
+    if (options[extension]) {
+      responseText = JSON.stringify(options[extension]);
+    } else {
+      responseText = 'This url does not exist.';
     }
   } else {
     statusCode = 404;
     responseText = 'URL not found';
   }
 
-  const headers = defaultCorsHeaders;
-  headers['Content-Type'] = 'application/json';
+  headers['Content-Type'] = contentType;
   response.writeHead(statusCode, headers);
   response.end(responseText);
 };
