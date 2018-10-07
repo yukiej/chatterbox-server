@@ -22,7 +22,7 @@ const messageSorter = (flag) => {
     messages.results.sort((m1, m2) => {
       if (m1[flag] < m2[flag]) {
         return -1;
-      } else if (m1[flag] > m2[flag]){
+      } else if (m1[flag] > m2[flag]) {
         return 1;
       } else {
         return 0;
