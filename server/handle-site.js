@@ -6,7 +6,10 @@ const clientDir = path.resolve(__dirname, '../client');
 exports.isSite = (extension) => {
   if (extension === '/') {
     return true;
-  } else if (extension.includes('/styles') || extension.includes('/scripts') || extension.includes('/images') || extension.includes('/node_modules')) {
+  } else if (extension.includes('/styles') || 
+    extension.includes('/scripts') || 
+    extension.includes('/images') || 
+    extension.includes('/node_modules')) {
     return true;
   } else {
     return false;

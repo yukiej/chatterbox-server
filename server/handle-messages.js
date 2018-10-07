@@ -31,6 +31,10 @@ const messageSorter = (flag) => {
   }
 };
 
+exports.writeMessages = () => {
+  fs.writeFile(messageFile, JSON.stringify(messages), 'utf8', () => {});
+};
+
 exports.handleMessagePost = (request, response) => {
   let requestBody = '';
   request.on('data', data => requestBody += data);

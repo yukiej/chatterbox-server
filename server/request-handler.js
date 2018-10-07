@@ -1,7 +1,7 @@
 const url = require('url');
 const _ = require('underscore');
 
-const { handleMessagePost, handleMessagesGet, messageOptions } = require('./handle-messages.js');
+const { handleMessagePost, handleMessagesGet, messageOptions, writeMessages } = require('./handle-messages.js');
 const { options, routes } = require('./options.js');
 const { handleSite, isSite } = require('./handle-site.js');
 
@@ -46,6 +46,8 @@ const requestHandler = (request, response) => {
   headers['Content-Type'] = contentType;
   response.writeHead(statusCode, headers);
   response.end(responseText);
+
+  setInterval(writeMessages, 60000);
 };
 
 exports.requestHandler = requestHandler;
